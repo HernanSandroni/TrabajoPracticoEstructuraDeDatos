@@ -1,0 +1,4 @@
+En el primer codigo "clases.py" tenemos definidas las clases principales: usuario, mensaje, carpeta, ServidorCorreo. 
+Encapsuladas y con sus propiedades.
+En el segundo codigo "interfaces.py" agregamos para enviar, recibir y listar mensajes dentro de las clases Usuario y 
+ServidorCorreo. ServidorCorreo centraliza el envío entre usuarios.
