@@ -1,0 +1,43 @@
+#Diagrama de clases UML
+
+classDiagram
+    class Usuario {
+        - nombre : str
+        - email : str
+        - carpetas : List[Carpeta]
+        + enviar_mensaje(servidor, destinatario, asunto, cuerpo, urgente)
+        + recibir_mensaje(mensaje)
+        + listar_mensajes(carpeta_nombre)
+        + agregar_carpeta(carpeta)
+        + obtener_carpeta(nombre)
+    }
+
+    class Mensaje {
+        - remitente : str
+        - destinatario : str
+        - asunto : str
+        - cuerpo : str
+        - fecha : datetime
+        - urgente : bool
+    }
+
+    class Carpeta {
+        - nombre : str
+        - mensajes : List[Mensaje]
+        - subcarpetas : List[Carpeta]
+        + agregar_mensaje(mensaje)
+        + listar_mensajes()
+        + agregar_subcarpeta(carpeta)
+    }
+
+    class ServidorCorreo {
+        - nombre : str
+        - usuarios : List[Usuario]
+        + registrar_usuario(usuario)
+        + enviar_mensaje(mensaje) : bool
+    }
+
+    Usuario "1" --> "*" Carpeta
+    Carpeta "1" --> "*" Mensaje
+    Usuario "1" --> "*" Mensaje : "envía"
+    ServidorCorreo "1" --> "*" Usuario
