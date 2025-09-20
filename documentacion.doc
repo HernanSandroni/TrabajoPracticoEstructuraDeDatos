@@ -4,72 +4,53 @@ En el segundo codigo "interfaces.py" agregamos para enviar, recibir y listar men
 ServidorCorreo. ServidorCorreo centraliza el envío entre usuarios.
 
 El sistema fue diseñado siguiendo principios de programación orientada a objetos (POO) y aplicando encapsulamiento para 
-proteger los datos internos de cada clase. Las principales decisiones fueron:
+proteger los datos internos de cada clase. Las principales decisiones tomadas fueron:
 
-.Clase Usuario
+Clase Usuario:
+
 
 Representa a cada persona que usa el cliente de correo.
-
 Tiene atributos privados (__nombre, __email, __carpetas).
-
 Métodos principales:
-
 enviar_mensaje() → interfaz para mandar un mensaje usando el servidor.
-
 recibir_mensaje() → cuando alguien le escribe, lo recibe en su bandeja.
-
 listar_mensajes() → ver los mensajes de una carpeta específica.
-
 Se decidió que cada usuario tenga una Bandeja de Entrada creada por defecto, porque es la carpeta básica de cualquier correo.
 
-Clase Mensaje
+
+Clase Mensaje:
+
 
 Representa un email individual.
-
 Guarda información del remitente, destinatario, asunto, cuerpo, fecha y urgencia.
-
 Todos los atributos son de solo lectura (consultables con propiedades).
-
 Esto evita que después de creado el mensaje se cambie su contenido, imitando cómo funciona un email real.
 
-Clase Carpeta
+
+Clase Carpeta:
+
 
 Permite organizar los mensajes, igual que en cualquier correo electrónico.
-
 Puede contener mensajes y subcarpetas (estructura jerárquica).
-
 Métodos:
-
 agregar_mensaje() → guardar un email en la carpeta.
-
 listar_mensajes() → devolver un listado con asunto, remitente y fecha.
-
 agregar_subcarpeta() → para crear carpetas dentro de otras (sirve para la parte de recursividad en entregas futuras).
 
-Clase ServidorCorreo
+
+Clase ServidorCorreo:
+
 
 Actúa como intermediario entre los usuarios.
-
 Se encarga de registrar usuarios y entregar los mensajes.
-
 El método enviar_mensaje() busca el destinatario en la lista de usuarios y, si lo encuentra, lo coloca en su bandeja de entrada.
-
 Encapsulamiento y propiedades
-
 Se usaron atributos privados (__atributo) para proteger los datos.
-
 Los métodos @property permiten acceder a los valores de forma controlada.
-
 Esto ayuda a evitar errores comunes en principiantes y asegura que los datos importantes no se cambien sin pasar por métodos específicos.
-
 Simplicidad y claridad
-
 El diseño fue pensado para que 3 personas puedan trabajar en paralelo:
-
 Uno puede encargarse de Usuario y su lógica de envío/recepción.
-
 Otro de Mensaje y Carpeta.
-
 Otro de ServidorCorreo y la integración.
-
 Cada clase tiene una responsabilidad clara, lo cual facilita dividir el trabajo y entender el código.

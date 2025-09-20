@@ -13,5 +13,5 @@ juan.enviar_mensaje(servidor, "ana@mail.com", "Hola", "¿Cómo estás?")
 print(ana.listar_mensajes())
 
 
-#ejemplo:
+#ejemplo de lo que se imprimiria en pantalla:
 ['2025-09-17 14:35:12.345678 | juan@mail.com -> Hola']

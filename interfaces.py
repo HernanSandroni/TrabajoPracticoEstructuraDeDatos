@@ -11,7 +11,6 @@ class Mensaje:
         self.__fecha = datetime.now()
         self.__urgente = urgente
 
-    # Propiedades de solo lectura
     @property
     def remitente(self):
         return self.__remitente
@@ -49,7 +48,7 @@ class Carpeta:
 
     @property
     def mensajes(self):
-        return list(self.__mensajes)  # devuelve copia
+        return list(self.__mensajes)  
 
     @property
     def subcarpetas(self):

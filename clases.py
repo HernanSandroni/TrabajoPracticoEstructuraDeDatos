@@ -7,7 +7,7 @@ class Usuario:
         self.__email = email
         self.__carpetas: List['Carpeta'] = []
 
-    # Getters y setters con propiedades
+    # Getters and setters con propiedades
     @property
     def nombre(self):
         return self.__nombre
