@@ -56,7 +56,9 @@ class Mensaje:
     @property
     def urgente(self):
         return self.__urgente
-
+    
+    def __str__(self):
+        return f"[{self.__fecha}] {self.__asunto} (De: {self.__remitente}, Para: {self.__destinatario}, Urgente: {self.__urgente})"
 
 class Carpeta:
     def __init__(self, nombre: str):
