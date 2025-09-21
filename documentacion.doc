@@ -1,3 +1,7 @@
+El presente trabajo implementa un modelo orientado a objetos en Python que simula un cliente de correo electrónico. Se definieron las clases principales solicitadas: Usuario, Mensaje, Carpeta y ServidorCorreo, aplicando los principios de la Programación Orientada a Objetos (POO): abstracción, encapsulamiento, modularidad y responsabilidad única.
+
+El objetivo de este diseño es garantizar claridad en la estructura, facilidad de mantenimiento y extensibilidad para futuras entregas (como filtros, búsquedas avanzadas o persistencia de datos).
+
 En el primer codigo "clases.py" tenemos definidas las clases principales: usuario, mensaje, carpeta, ServidorCorreo. 
 Encapsuladas y con sus propiedades.
 En el segundo codigo "interfaces.py" agregamos para enviar, recibir y listar mensajes dentro de las clases Usuario y 
