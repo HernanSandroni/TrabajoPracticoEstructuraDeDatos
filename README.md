@@ -2,8 +2,8 @@
 
 # Grupo número 25
 
-#Integrantes del grupo
--Mariano Hernan Berón- [porsiempreeshoy@gmail.com]
+#Integrantes del grupo:
+# -Mariano Hernan Berón- [porsiempreeshoy@gmail.com]
 -Hernan Sandroni- [hernansandroni@gmail.com]
 -Tomás Agustin Luna- [tomasluna399@gmail.com
 
