@@ -3,120 +3,112 @@ from usuario import Usuario
 from mensaje import Mensaje
 
 
-# ==============================
-#   MENÚS Y OPCIONES
-# ==============================
-
 def mostrar_menu_principal():
-    print("\n======= CLIENTE DE CORREO – UNaB =======")
-    print("1. Iniciar sesión")
+    print("\n=== CLIENTE DE CORREO – UNaB ===")
+    print("1. Iniciar sesión como usuario")
     print("2. Crear usuario nuevo")
     print("3. Salir")
-    print("========================================")
 
 
 def mostrar_menu_usuario(usuario):
-    print(f"\n======= Sesión de {usuario.nombre} =======")
-    print("1. Ver estructura de carpetas (árbol)")
+    print(f"\n=== Menú de {usuario.nombre} ===")
+    print("1. Ver carpetas y mensajes")
     print("2. Enviar mensaje")
-    print("3. Buscar mensaje (recursivo)")
+    print("3. Buscar mensaje")
     print("4. Aplicar filtros automáticos")
-    print("5. Ver mensajes urgentes (cola prioridad)")
+    print("5. Ver mensajes urgentes (cola de prioridad)")
     print("6. Simular envío por red (BFS/DFS)")
-    print("7. Ver bandeja de entrada")
-    print("8. Cerrar sesión")
-    print("==========================================")
+    print("7. Cerrar sesión")
 
-
-# ==============================
-#   PROGRAMA PRINCIPAL
-# ==============================
 
 def main():
-    print("\n*** INICIANDO SISTEMA DE CORREO UNaB ***")
-
-    servidor = ServidorCorreo()  # Grafo + red + envío
-    usuarios = {}                # Almacenamiento en memoria
+    servidor = ServidorCorreo()
+    usuarios = {}
 
     while True:
         mostrar_menu_principal()
-        opcion = input("Seleccione una opción: ").strip()
+        opcion = input("Seleccione una opción: ")
 
-        # ==============================
+        # ============================
         # INICIAR SESIÓN
-        # ==============================
+        # ============================
         if opcion == "1":
-            nombre = input("Nombre de usuario: ").strip()
+            nombre = input("Ingrese su nombre: ")
 
             if nombre not in usuarios:
                 print("❌ Usuario no encontrado.")
                 continue
 
             usuario = usuarios[nombre]
-            print(f"✔ Sesión iniciada como {nombre}")
+            print(f"✔ Sesión iniciada como {nombre}.")
 
+            # ============================================
             # MENÚ DEL USUARIO
+            # ============================================
             while True:
                 mostrar_menu_usuario(usuario)
-                op = input("Seleccione una opción: ").strip()
+                op = input("Seleccione una opción: ")
 
-                # ==============================
-                # VER CARPETAS
-                # ==============================
+                # ------------------------------
+                # 1. VER CARPETAS
+                # ------------------------------
                 if op == "1":
-                    print("\n--- ESTRUCTURA DE CARPETAS ---")
-                    usuario.carpetas.mostrar_estructura()
+                    usuario.mostrar_carpetas()
 
-                # ==============================
-                # ENVIAR MENSAJE
-                # ==============================
+                # ------------------------------
+                # 2. ENVIAR MENSAJE
+                # ------------------------------
                 elif op == "2":
+                    remitente = usuario.nombre
                     destinatario = input("Destinatario: ")
+
+                    if destinatario not in usuarios:
+                        print("❌ El destinatario no existe.")
+                        continue
+
                     asunto = input("Asunto: ")
                     cuerpo = input("Mensaje: ")
 
-                    if destinatario not in usuarios:
-                        print("❌ Ese usuario no existe.")
-                        continue
+                    urgente_op = input("¿Es urgente? (s/n): ").lower()
+                    urgente = urgente_op == "s"
 
-                    msg = Mensaje(usuario.nombre, destinatario, asunto, cuerpo)
+                    # Crear objeto Mensaje
+                    msg = Mensaje(remitente, destinatario, asunto, cuerpo, urgente)
 
-                    servidor.enviar_mensaje(usuario.nombre, destinatario, asunto, cuerpo)
+                    # Enviar y entregar
+                    servidor.enviar_mensaje(remitente, destinatario, asunto, cuerpo, urgente)
+
                     usuarios[destinatario].recibir_mensaje(msg)
 
-                    print("✔ Mensaje enviado correctamente.")
+                    print("📨 Mensaje enviado con éxito.")
 
-                # ==============================
-                # BÚSQUEDA RECURSIVA
-                # ==============================
+                # ------------------------------
+                # 3. BUSCAR MENSAJE
+                # ------------------------------
                 elif op == "3":
                     criterio = input("Buscar por asunto o remitente: ")
-                    print("\n--- RESULTADOS DE BÚSQUEDA ---")
                     usuario.buscar_mensajes(criterio)
 
-                # ==============================
-                # APLICAR FILTROS AUTOMÁTICOS
-                # ==============================
+                # ------------------------------
+                # 4. APLICAR FILTROS
+                # ------------------------------
                 elif op == "4":
-                    print("\nAplicando filtros automáticos…")
                     usuario.aplicar_filtros()
-                    print("✔ Mensajes ordenados según reglas.")
 
-                # ==============================
-                # COLA DE PRIORIDAD
-                # ==============================
+                # ------------------------------
+                # 5. URGENTES
+                # ------------------------------
                 elif op == "5":
-                    print("\n--- MENSAJES URGENTES ---")
                     usuario.ver_urgentes()
 
-                # ==============================
-                # GRAFO + BFS/DFS
-                # ==============================
+                # ------------------------------
+                # 6. SIMULACIÓN DE RED BFS / DFS
+                # ------------------------------
                 elif op == "6":
-                    print("\n--- SIMULACIÓN DE RED DE SERVIDORES ---")
-                    print("1. BFS")
-                    print("2. DFS")
-                    metodo = input("Método de recorrido: ")
+                    print("\n--- Simulación por red ---")
+                    print("1. BFS (Recorrido en anchura)")
+                    print("2. DFS (Recorrido en profundidad)")
+                    metodo = input("Seleccione método: ")
 
                     if metodo == "1":
                         servidor.simular_envio_red(usuario.nombre, metodo="BFS")
@@ -125,51 +117,42 @@ def main():
                     else:
                         print("❌ Método inválido.")
 
-                # ==============================
-                # VER BANDEJA DE ENTRADA
-                # ==============================
+                # ------------------------------
+                # 7. CERRAR SESIÓN
+                # ------------------------------
                 elif op == "7":
-                    print("\n--- BANDEJA DE ENTRADA ---")
-                    usuario.carpetas.mostrar_mensajes_bandeja()
-
-                # ==============================
-                # CERRAR SESIÓN
-                # ==============================
-                elif op == "8":
-                    print("✔ Sesión cerrada.")
+                    print("🔒 Sesión cerrada.")
                     break
 
                 else:
                     print("❌ Opción inválida.")
 
-        # ==============================
-        # CREAR USUARIO
-        # ==============================
+        # ============================
+        # CREAR NUEVO USUARIO
+        # ============================
         elif opcion == "2":
-            nombre = input("Nuevo nombre de usuario: ").strip()
+            nombre = input("Nuevo nombre de usuario: ")
 
             if nombre in usuarios:
                 print("❌ Ese usuario ya existe.")
-                continue
+            else:
+                nuevo = Usuario(nombre)
+                usuarios[nombre] = nuevo
+                servidor.registrar_usuario(nombre)
+                print("✔ Usuario creado con éxito.")
 
-            usuarios[nombre] = Usuario(nombre)
-            print("✔ Usuario creado correctamente.")
-
-        # ==============================
-        # SALIR
-        # ==============================
+        # ============================
+        # SALIR DEL SISTEMA
+        # ============================
         elif opcion == "3":
-            print("\nSaliendo del sistema… Gracias por usar el Cliente de Correo UNaB.")
+            print("👋 Saliendo del sistema…")
             break
 
         else:
             print("❌ Opción inválida.")
 
 
-# ==============================
-#   EJECUCIÓN
-# ==============================
-
 if __name__ == "__main__":
     main()
+
 
