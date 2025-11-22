@@ -18,7 +18,7 @@ El proyecto se divide en **cuatro entregas**, cada una incorporando nuevas funci
 
 ---
 
-## 🧩 Entrega 1 — Modelado y Clases Principales
+##  Entrega 1 — Modelado y Clases Principales
 
 En esta etapa se diseñaron las clases base del sistema:
 
