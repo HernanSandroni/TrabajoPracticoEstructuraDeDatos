@@ -1,60 +1,240 @@
-El presente trabajo implementa un modelo orientado a objetos en Python que simula un cliente de correo electrónico. Se definieron las clases principales solicitadas: Usuario, Mensaje, Carpeta y ServidorCorreo, aplicando los principios de la Programación Orientada a Objetos (POO): abstracción, encapsulamiento, modularidad y responsabilidad única.
+Documentación Final — Cliente de Correo Electrónico
 
-El objetivo de este diseño es garantizar claridad en la estructura, facilidad de mantenimiento y extensibilidad para futuras entregas (como filtros, búsquedas avanzadas o persistencia de datos).
+Trabajo Práctico – Estructuras de Datos – Entrega 4 (Entrega Final)
 
-En el primer codigo "clases.py" tenemos definidas las clases principales: usuario, mensaje, carpeta, ServidorCorreo. 
-Encapsuladas y con sus propiedades.
-En el segundo codigo "interfaces.py" agregamos para enviar, recibir y listar mensajes dentro de las clases Usuario y 
-ServidorCorreo. ServidorCorreo centraliza el envío entre usuarios.
+1. Introducción
 
-El sistema fue diseñado siguiendo principios de programación orientada a objetos (POO) y aplicando encapsulamiento para 
-proteger los datos internos de cada clase. Las principales decisiones tomadas fueron:
+El presente proyecto consiste en la implementación de un Cliente de Correo Electrónico desarrollado en Python, aplicando Programación Orientada a Objetos (POO) y diversas estructuras de datos vistas en la materia.
+El sistema incluye funcionalidad de usuarios, mensajes, carpetas recursivas, filtros automáticos, cola de prioridades y simulación de red mediante grafos.
 
-Clase Usuario:
+Este documento describe:
 
+Diseño orientado a objetos
 
-Representa a cada persona que usa el cliente de correo.
-Tiene atributos privados (__nombre, __email, __carpetas).
-Métodos principales:
-enviar_mensaje() → interfaz para mandar un mensaje usando el servidor.
-recibir_mensaje() → cuando alguien le escribe, lo recibe en su bandeja.
-listar_mensajes() → ver los mensajes de una carpeta específica.
-Se decidió que cada usuario tenga una Bandeja de Entrada creada por defecto, porque es la carpeta básica de cualquier correo.
+Justificación de decisiones de implementación
 
+Uso de estructuras de datos
 
-Clase Mensaje:
+Integración final del sistema
 
+Análisis de eficiencia
 
-Representa un email individual.
-Guarda información del remitente, destinatario, asunto, cuerpo, fecha y urgencia.
-Todos los atributos son de solo lectura (consultables con propiedades).
-Esto evita que después de creado el mensaje se cambie su contenido, imitando cómo funciona un email real.
+Conclusiones
 
+2. Diseño Orientado a Objetos
 
-Clase Carpeta:
+La arquitectura principal está compuesta por las clases:
 
+Usuario
 
-Permite organizar los mensajes, igual que en cualquier correo electrónico.
-Puede contener mensajes y subcarpetas (estructura jerárquica).
-Métodos:
-agregar_mensaje() → guardar un email en la carpeta.
-listar_mensajes() → devolver un listado con asunto, remitente y fecha.
-agregar_subcarpeta() → para crear carpetas dentro de otras (sirve para la parte de recursividad en entregas futuras).
+Mensaje
 
+Carpeta (árbol general recursivo)
 
-Clase ServidorCorreo:
+ServidorCorreo (gestiona usuarios y envíos)
 
+Filtros (listas, diccionarios)
 
-Actúa como intermediario entre los usuarios.
-Se encarga de registrar usuarios y entregar los mensajes.
-El método enviar_mensaje() busca el destinatario en la lista de usuarios y, si lo encuentra, lo coloca en su bandeja de entrada.
-Encapsulamiento y propiedades
-Se usaron atributos privados (__atributo) para proteger los datos.
-Los métodos @property permiten acceder a los valores de forma controlada.
-Esto ayuda a evitar errores comunes en principiantes y asegura que los datos importantes no se cambien sin pasar por métodos específicos.
-Simplicidad y claridad
-El diseño fue pensado para que 3 personas puedan trabajar en paralelo:
-Uno puede encargarse de Usuario y su lógica de envío/recepción.
-Otro de Mensaje y Carpeta.
-Otro de ServidorCorreo y la integración.
-Cada clase tiene una responsabilidad clara, lo cual facilita dividir el trabajo y entender el código.
+ColaPrioridades (prioridad por urgencia)
+
+RedServidores (grafo con BFS/DFS)
+
+Principios aplicados
+
+✔ Encapsulamiento
+✔ Abstracción
+✔ Modularidad
+✔ Responsabilidad única
+✔ Extensibilidad para futuras funcionalidades
+
+3. Descripción y Justificación de Cada Clase
+3.1. Clase Usuario
+
+Responsabilidad: representar un usuario del sistema y gestionar sus carpetas y mensajes.
+
+Atributos principales:
+
+__nombre
+
+__email
+
+__carpetas (diccionario: nombre → Carpeta)
+
+__filtros (lista de reglas)
+
+__cola_prioridad (mensajes urgentes)
+
+Justificación:
+
+Los atributos son privados para evitar modificaciones directas.
+
+Se crea automáticamente la carpeta Bandeja de Entrada.
+
+Los filtros se guardan en una lista para aplicar reglas en orden secuencial.
+
+Se usa una cola de prioridad para “urgencia alta”.
+
+3.2. Clase Mensaje
+
+Responsabilidad: representar un correo individual.
+
+Atributos: remitente, destinatario, asunto, cuerpo, fecha, urgencia.
+
+Justificación:
+
+Se utilizan propiedades de solo lectura → un email real no se modifica tras ser enviado.
+
+Mantiene la integridad del historial.
+
+3.3. Clase Carpeta
+
+Responsabilidad: almacenar mensajes y subcarpetas.
+
+Estructura de datos implementada:
+
+Árbol general recursivo: cada Carpeta puede tener subcarpetas.
+
+Justificación:
+
+Permite búsquedas recursivas naturales.
+
+Soporta mover carpetas y mensajes entre niveles.
+
+3.4. Clase ServidorCorreo
+
+Responsabilidad: gestionar el envío y recepción entre usuarios.
+
+Justificación:
+
+Centraliza la lógica de distribución → diseño realista.
+
+Se evita que un usuario conozca a todos los demás (desacoplamiento).
+
+3.5. Filtros automáticos
+
+Implementados mediante:
+
+Listas → se almacenan reglas en orden de aplicación.
+
+Diccionarios → clave: condición, valor: carpeta destino.
+
+Ejemplo:
+{"remitente": "profesor@unab.edu", "carpeta": "Universidad"}
+
+3.6. Cola de Prioridades
+
+Implementada para mensajes urgentes (Estructura: heapq o lista ordenada, según implementación).
+
+Justificación:
+
+Garantiza que el mensaje más urgente sea procesado primero.
+
+Modelo real de sistemas de correo con bandejas de urgencia.
+
+3.7. Grafo – Red de Servidores
+
+La red se modela como un grafo no dirigido, donde:
+
+Nodo → servidor
+
+Arista → conexión
+
+Simulación de envío:
+
+BFS → camino más corto
+
+DFS → recorrido alternativo (ej. análisis de rutas)
+
+Justificación:
+
+Representa un sistema distribuido de servidores real.
+
+Permite medir eficiencia y comparar rutas.
+
+4. Procesos Recursivos Implementados
+
+✔ Búsqueda de mensajes por asunto o remitente en un árbol de carpetas
+✔ Listar completo el árbol de forma jerárquica
+✔ Mover carpetas o mensajes dentro de la estructura
+✔ Eliminación recursiva
+
+5. Interfaz de Usuario (CLI)
+
+El archivo main.py integra:
+
+Menús interactivos
+
+Envío de mensajes
+
+Listado de mensajes
+
+Creación de carpetas
+
+Aplicación de filtros
+
+Simulación de red
+
+Manejo de urgentes
+
+Justificación:
+
+Cumple con el requisito de Entrega 4.
+
+Mantiene la simplicidad y funciona desde consola.
+
+6. Análisis de Eficiencia
+Carpeta (árbol)
+
+Búsqueda recursiva → O(n)
+
+Inserción de carpeta → O(1)
+
+Mover carpeta → depende del recorrido (O(n))
+
+Cola de prioridad
+
+Insertar mensaje urgente → O(log n)
+
+Obtener el más urgente → O(1)
+
+Filtros automáticos
+
+Aplicación secuencial → O(k) (k = cantidad de filtros)
+
+Grafo (BFS/DFS)
+
+BFS → O(V + E)
+
+DFS → O(V + E)
+
+Conclusión:
+El sistema es eficiente para el uso esperado y utiliza adecuadamente las estructuras estudiadas.
+
+7. Material Adicional Incluido en el Repositorio
+
+✔ Diagramas de clases (Entrega 1)
+✔ Infografía del árbol de carpetas (Entrega 2)
+✔ Presentación sobre BFS/DFS y filtros automáticos (Entrega 3)
+✔ Código totalmente documentado
+✔ Readme completo
+✔ Ejemplos de uso en consola
+
+8. Conclusiones Finales
+
+El proyecto integra todos los contenidos de la materia:
+
+POO
+
+Árboles
+
+Listas y diccionarios
+
+Colas de prioridad
+
+Grafos
+
+Recursividad
+
+Análisis de eficiencia
+
+La arquitectura desarrollada permite incorporar nuevas funcionalidades con mínima modificación del código existente, demostrando un diseño extensible y mantenible.
